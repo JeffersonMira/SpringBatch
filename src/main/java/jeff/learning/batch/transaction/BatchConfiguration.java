@@ -1,4 +1,4 @@
-package jeff.learning.batch;
+package jeff.learning.batch.transaction;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -78,13 +78,13 @@ public class BatchConfiguration {
     * */
     @Bean
     public Job job(Step step1) throws Exception {
-//        return linearFlow(step1);
-    	return goToOtherOnStatus();
+        return goToOtherOnStatus();
+//    	return linearFlow(step1);
     }
     
     //Simplier job execution - first, then second and so on.
     private Job linearFlow(Step step1) throws Exception{
-    	 return jobBuilderFactory.get("transitionJobNext")
+    	 return jobBuilderFactory.get("transitionJobNext1")
                  .incrementer(new RunIdIncrementer())  // Not really necessary for a hello world
                  .start(step1())
                  .next(step2())
@@ -95,11 +95,11 @@ public class BatchConfiguration {
     
     //It is also possible to create a flow, for some specific status. D
     private Job goToOtherOnStatus(){
-    	return jobBuilderFactory.get("transitionJobNext")
+    	return jobBuilderFactory.get("transitionJobNext2")
     			.start(step1())
     			.on("COMPLETED").to(step2())
-    			.from(step2()).on("COMPLETED").stopAndRestart(step3()) //dois 'runs' vão acontecer neste caso
-//    			.from(step2()).on("COMPLETED").to(step3())
+//    			.from(step2()).on("COMPLETED").stopAndRestart(step3()) //dois 'runs' vão acontecer neste caso
+    			.from(step2()).on("COMPLETED").to(step3())
     			.from(step3()).end()
     			.build();
     }
