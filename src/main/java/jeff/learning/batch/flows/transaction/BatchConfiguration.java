@@ -1,4 +1,4 @@
-package jeff.learning.batch.transaction;
+package jeff.learning.batch.flows.transaction;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

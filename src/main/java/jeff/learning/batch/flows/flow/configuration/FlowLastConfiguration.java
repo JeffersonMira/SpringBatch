@@ -1,8 +1,9 @@
-package jeff.learning.batch.flow.configuration;
+package jeff.learning.batch.flows.flow.configuration;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.flow.Flow;
@@ -14,8 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FlowFirstConfiguration {
-
+@EnableBatchProcessing
+public class FlowLastConfiguration {
 	@Autowired
 	public JobBuilderFactory jobBuilderFactory;
 	
@@ -34,11 +35,15 @@ public class FlowFirstConfiguration {
 				}).build();
 	}
 	
+	
+	//Quando é definido que primeiro vai ser rodado um step especifico antes do flow
+	//tem que se usar o comando mais longo, que no caso é falar que, quando o status for 'completed'
+	//então se deve execuar o flow. 
 	@Bean
-	public Job flowFirstJob(Flow flow){
-		return jobBuilderFactory.get("flowFirstJob")
-				.start(flow)
-				.next(myStep())
+	public Job flowLastJob(Flow flow){
+		return jobBuilderFactory.get("flowLastJob")
+				.start(myStep())     
+				.on("COMPLETED").to(flow)
 				.end()
 				.build();
 	}

@@ -1,7 +1,8 @@
-package jeff.learning.batch.split.configuration;
+package jeff.learning.batch.flows.split.configuration;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
+@EnableBatchProcessing
 public class BatchConfiguration {
 
 	@Autowired
