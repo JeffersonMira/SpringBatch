@@ -1,6 +1,5 @@
 package jeff.learning.batch.flows.listeners;
 
-import jeff.learning.batch.flows.transaction.Main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,6 +10,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /*
 * Allow the developer to control and manager a more complex flow of execution, acting on the junction points.
 * Just neeeds to implement the necessay interface.
+* 
+* There are:
+*  * JobExecutionListener
+*  * StepExecutionListener
+*  * ChunkListener
+*  * ItemReaderListener
+*  * ItemProcesserListener
+*  * ItemWriterListener
 * */
 @SpringBootApplication
 public class MainComponent {
