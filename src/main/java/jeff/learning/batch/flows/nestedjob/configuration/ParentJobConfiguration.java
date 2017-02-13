@@ -28,7 +28,6 @@ public class ParentJobConfiguration {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     public Job childJob;
 
