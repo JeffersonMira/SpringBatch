@@ -1,4 +1,4 @@
-package jeff.learning.batch.input.fromFlatFile;
+package jeff.learning.batch.input.fromMultipleDataSources;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

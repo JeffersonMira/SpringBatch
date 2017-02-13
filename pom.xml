@@ -31,6 +31,13 @@
             <version>3.0.7.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>3.0.7.RELEASE</version>
+        </dependency>
+
+
         <!-- MySQL database driver -->
 		<dependency>
 			<groupId>mysql</groupId>
