@@ -1,0 +1,46 @@
+Spring batch provides 4 ways to provide scale for the job
+1) Mult-thread step: each chunk on its own thread
+	To implement it on the configuration of step (stepBuilderFactory) you have to add
+	the '.tastExecutor(<some task executor here, just as the SimpleTaskExecutor, which is not 
+	recommended to be used in a 'production like' environment>)'. It is included just before the '.build()'.
+	It gives you more than 50% of time less to be executed.
+	However the ability to restart the job is lost. As there are lots of threads (depending on the number of
+	chunks) the job can't really get a track of what has been already processed and what is pending to be processed.
+	As it is the case, you can just disable it, on the reader.
+	
+2) Async itemprocessor / itemwriter : item processer returns a future  ??????? não saquei
+	It is the ability to create parallel processing (not reading nor writing) in a single JVM,
+	so for each new task, it creates a new thread. 
+	It creates a different thread of execution, that is different of the main processing.
+	You do it using the AsyncItemProcessor, which receives, as parameter for 'setDelegate', the processor
+	that have the real logic to be executed.
+	It is possible to use the AsyncItemWriter as well.
+	In the training, the trainer said that it is not good to use this guy on production environment.
+	Really didn't get very well why.
+	Using it, the example create (where the processor just returned the item, however included an sleep of 
+	0.0010 of second for each one of the 1000 items) comes from 9 minutes of execution to 24 seconds.
+	But the items must not depend on the order that they are executed.
+
+3) Particioning - TENHO QUE CRIAR ESTE CARA: create particions which are processed in parallel. basically divide and execute.
+                   It can be remote particioning, using remove jvms. Each particion is a different step.
+    Divide in equals parts. You create the master and the slave.
+                   
+    We have the partitioner and the partition. We have the partition handler who keeps the options.
+    
+    This one is more complicated. Will need to use it on real life.
+    
+3.2) Remote Particioning - TENHO QUE CRIAR ESTE!!!: 
+		You should, in the configuration of the job, implements the ApplicationContextAware.
+		User the Autowired JobRepository and Autowired JobExplorer. Also, use the partitionHandler, which is
+		the messageChannelPartitionHandler.
+		It is necessary to use the partitionHandler, which needs to receive the MEssageTemplate
+		Also it needs the JobExplorer, which is autowired.
+		
+		Needs to know - @Profile("slave"), @ServiceActivator()
+     
+4) Remote chunking : processing and writing happens on a slave.
+		Master ----(data to process)---> Slave (process and writes)
+		Almost like the remote partitioning. The items are read and then sent to the slave guys.
+		Creates a bean for ChunkHandler and use the RemoteChunkHandlerFactoryBean
+		
+
